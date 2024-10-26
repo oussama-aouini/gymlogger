@@ -11,9 +11,9 @@ namespace gymlogger.Data
             
         }
 
-        DbSet<Exercise> Exercises { get; set; }
-        DbSet<Set> Sets { get; set; }
-        DbSet<WorkoutSession> WorkoutSessions { get; set; }
-        DbSet<WorkoutTemplate> workoutsTemplates { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<Set> Sets { get; set; }
+        public DbSet<WorkoutSession> WorkoutSessions { get; set; }
+        public DbSet<WorkoutTemplate> workoutsTemplates { get; set; }
     }
 }
