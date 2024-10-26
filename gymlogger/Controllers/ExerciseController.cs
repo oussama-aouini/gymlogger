@@ -1,4 +1,5 @@
 ﻿using gymlogger.Data;
+using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gymlogger.Controllers
@@ -16,7 +17,8 @@ namespace gymlogger.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var exercises = _context.Exercises.ToList();
+            var exercises = _context.Exercises.ToList()
+                .Select(e => e.ToExerciseDto());
 
             return Ok(exercises);
         }
@@ -31,7 +33,7 @@ namespace gymlogger.Controllers
                 return NotFound();
             }
 
-            return Ok(exercise);
+            return Ok(exercise.ToExerciseDto());
         }
     }
 }
