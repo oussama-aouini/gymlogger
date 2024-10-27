@@ -63,5 +63,22 @@ namespace gymlogger.Controllers
             
             return Ok(exerciseModel.ToExerciseDto());
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id) 
+        { 
+            var exerciseModel = _context.Exercises.FirstOrDefault(e => e.Id==id);
+            
+            if (exerciseModel == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(exerciseModel);
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
