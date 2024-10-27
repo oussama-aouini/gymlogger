@@ -45,5 +45,23 @@ namespace gymlogger.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = exerciseModel.Id}, exerciseModel.ToExerciseDto());
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] int id ,[FromBody] UpdateExerciseRequestDto exerciseDto)
+        {
+            var exerciseModel = _context.Exercises.FirstOrDefault(e => e.Id == id);
+
+            if (exerciseModel == null)
+            {
+                return NotFound();
+            }
+
+            exerciseModel.Name = exerciseDto.Name;
+            exerciseModel.Muscles = exerciseDto.Muscles;
+
+            _context.SaveChanges();
+            
+            return Ok(exerciseModel.ToExerciseDto());
+        }
     }
 }
