@@ -3,10 +3,13 @@
     public enum Muscle
     {
         Chest,
-        Back,
-        Shoulders,
-        Legs,
-        Arms,
-        Core,
+        Biceps,
+        Triceps,
+        FrontDelt,
+        LateralDelts,
+        RearDelts,
+        Quadriceps,
+        Hamstrings,
+        Glutes,
     }
 }
