@@ -2,6 +2,7 @@
 using gymlogger.Dtos.Exercise;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace gymlogger.Controllers
 {
@@ -16,18 +17,19 @@ namespace gymlogger.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var exercises = _context.Exercises.ToList()
-                .Select(e => e.ToExerciseDto());
+            var exercises = await _context.Exercises.ToListAsync();
 
-            return Ok(exercises);
+            var exercisesDto = exercises.Select(e => e.ToExerciseDto());
+
+            return Ok(exercisesDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var exercise = _context.Exercises.Find(id);
+            var exercise = await _context.Exercises.FindAsync(id);
 
             if (exercise == null)
             {
@@ -38,18 +40,18 @@ namespace gymlogger.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateExerciseRequestDto exerciseDto)
+        public async Task<IActionResult> Create(CreateExerciseRequestDto exerciseDto)
         {
             var exerciseModel = exerciseDto.ToExerciseFromCreateDto();
-            _context.Exercises.Add(exerciseModel);
-            _context.SaveChanges();
+            await _context.Exercises.AddAsync(exerciseModel);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new {id = exerciseModel.Id}, exerciseModel.ToExerciseDto());
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id ,[FromBody] UpdateExerciseRequestDto exerciseDto)
+        public async Task<IActionResult> Update([FromRoute] int id ,[FromBody] UpdateExerciseRequestDto exerciseDto)
         {
-            var exerciseModel = _context.Exercises.FirstOrDefault(e => e.Id == id);
+            var exerciseModel = await _context.Exercises.FirstOrDefaultAsync(e => e.Id == id);
 
             if (exerciseModel == null)
             {
@@ -59,15 +61,15 @@ namespace gymlogger.Controllers
             exerciseModel.Name = exerciseDto.Name;
             exerciseModel.Muscles = exerciseDto.Muscles;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             
             return Ok(exerciseModel.ToExerciseDto());
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int id) 
+        public async Task<IActionResult> Delete([FromRoute] int id) 
         { 
-            var exerciseModel = _context.Exercises.FirstOrDefault(e => e.Id==id);
+            var exerciseModel = await _context.Exercises.FirstOrDefaultAsync(e => e.Id==id);
             
             if (exerciseModel == null)
             {
@@ -76,7 +78,7 @@ namespace gymlogger.Controllers
 
             _context.Remove(exerciseModel);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
