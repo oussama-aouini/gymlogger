@@ -1,4 +1,5 @@
 ﻿using gymlogger.Data;
+using gymlogger.Dtos.Exercise;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,15 @@ namespace gymlogger.Controllers
             }
 
             return Ok(exercise.ToExerciseDto());
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateExerciseRequestDto exerciseDto)
+        {
+            var exerciseModel = exerciseDto.ToExerciseFromCreateDto();
+            _context.Exercises.Add(exerciseModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = exerciseModel.Id}, exerciseModel.ToExerciseDto());
         }
     }
 }

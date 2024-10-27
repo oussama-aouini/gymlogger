@@ -14,5 +14,14 @@ namespace gymlogger.Mappers
                 Muscles = exercise.Muscles,
             };
         }
+
+        public static Exercise ToExerciseFromCreateDto(this CreateExerciseRequestDto requestDto)
+        {
+            return new Exercise
+            {
+                Name = requestDto.Name,
+                Muscles = requestDto.Muscles,
+            };
+        }
     }
 }
