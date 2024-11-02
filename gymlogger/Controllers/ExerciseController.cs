@@ -1,5 +1,6 @@
 ﻿using gymlogger.Data;
 using gymlogger.Dtos.Exercise;
+using gymlogger.Interfaces;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +12,17 @@ namespace gymlogger.Controllers
     public class ExerciseController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public ExerciseController(ApplicationDBContext context)
+        private readonly IExerciseRepository _exerciseRepository;
+        public ExerciseController(ApplicationDBContext context, IExerciseRepository exerciseRepository)
         {
             _context = context;
+            _exerciseRepository = exerciseRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var exercises = await _context.Exercises.ToListAsync();
+            var exercises = await _exerciseRepository.GetAllAsync();
 
             var exercisesDto = exercises.Select(e => e.ToExerciseDto());
 
