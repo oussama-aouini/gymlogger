@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<ISetRepository, SetRepository>();
 
 var app = builder.Build();
 
