@@ -7,5 +7,9 @@
 
         // Many-to-Many: WorkoutTemplate can have many Exercises
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
+
+        // One to many user:WorkoutTemplate props
+        public int UserId { get; set; }
+        public AppUser User { get; set; } = null!;
     }
 }

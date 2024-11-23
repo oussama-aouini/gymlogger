@@ -1,4 +1,6 @@
-﻿namespace gymlogger.Models
+﻿using gymlogger.Enums;
+
+namespace gymlogger.Models
 {
     public class Set
     {
@@ -15,5 +17,9 @@
         // Foreign Key to Exercise
         public int ExerciseId { get; set; }
         public Exercise Exercise { get; set; } = null!; // null-forgiving operator used when relationship is mandatory and we will have the information from the database at runtime in a nutshell it tells the compiler don't worrt it won't be null
+
+        // One to many user:set props
+        public int UserId { get; set; }
+        public AppUser User { get; set; } = null!;
     }
 }
