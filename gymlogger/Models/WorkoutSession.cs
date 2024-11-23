@@ -13,7 +13,7 @@
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
 
         // One to many user:workoutSession props
-        public int UserId { get; set; }
-        public AppUser User { get; set; } = null!;
+        public string AppUserId { get; set; } = null!;
+        public AppUser AppUser { get; set; } = null!;
     }
 }

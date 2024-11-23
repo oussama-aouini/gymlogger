@@ -39,12 +39,12 @@ namespace gymlogger.Repository
 
         public async Task<List<Set>> GetSetsByExerciseIdAsync(string userId, int workoutSessionId)
         {
-            return await _context.Sets.Where(s => s.WorkoutSessionId == workoutSessionId && s.User.Id == userId).ToListAsync();
+            return await _context.Sets.Where(s => s.WorkoutSessionId == workoutSessionId && s.AppUser.Id == userId).ToListAsync();
         }
 
         public async Task<List<Set>> GetSetsByWorkoutSessionIdAsync(string userId, int exerciseId)
         {
-            return await _context.Sets.Where(s => s.WorkoutSessionId == exerciseId && s.User.Id == userId).ToListAsync();
+            return await _context.Sets.Where(s => s.WorkoutSessionId == exerciseId && s.AppUser.Id == userId).ToListAsync();
         }
     }
 }

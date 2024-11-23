@@ -20,7 +20,7 @@ namespace gymlogger.Models
         public Exercise Exercise { get; set; } = null!; // null-forgiving operator used when relationship is mandatory and we will have the information from the database at runtime in a nutshell it tells the compiler don't worrt it won't be null
 
         // One to many user:set props
-        public int UserId { get; set; }
-        public AppUser User { get; set; } = null!;
+        public string AppUserId { get; set; } = null!;
+        public AppUser AppUser { get; set; } = null!;
     }
 }

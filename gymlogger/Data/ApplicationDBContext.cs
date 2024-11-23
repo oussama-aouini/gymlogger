@@ -22,6 +22,12 @@ namespace gymlogger.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<WorkoutSession>()
+            .HasOne(ws => ws.AppUser)
+            .WithMany(u => u.WorkoutSessions)
+            .HasForeignKey(ws => ws.AppUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
             List<IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
