@@ -14,10 +14,25 @@ namespace gymlogger.Controllers
             _setRepository = setRepository;
         }
 
-        [HttpGet("{usedId}/{sessionId}")]
+        [HttpGet("{usedId}/session/{sessionId}")]
         public async Task<IActionResult> GetWorkoutSessionSets([FromRoute] string usedId, [FromRoute] int sessionId)
         {
             var sets = await _setRepository.GetSetsByWorkoutSessionIdAsync(usedId, sessionId);
+
+            if (sets == null)
+            {
+                return NotFound();
+            }
+
+            var setsDto = sets.Select(set => set.ToSetDto());
+
+            return Ok(setsDto);
+        }
+
+        [HttpGet("{usedId}/exercise/{exerciseId}")]
+        public async Task<IActionResult> GetExerciseSets([FromRoute] string usedId, [FromRoute] int exerciseId)
+        {
+            var sets = await _setRepository.GetSetsByExerciseIdAsync(usedId, exerciseId);
 
             if (sets == null)
             {
