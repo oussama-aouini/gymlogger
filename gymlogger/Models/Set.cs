@@ -9,6 +9,7 @@ namespace gymlogger.Models
         public int Id { get; set; }
         public float Weight { get; set; }
         public int Repetitions { get; set; }
+        public SetType SetType { get; set; }
 
         // Foreign Key to WorkoutSession
         public int WorkoutSessionId { get; set; }
