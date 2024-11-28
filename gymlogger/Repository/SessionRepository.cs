@@ -15,11 +15,12 @@ namespace gymlogger.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<WorkoutSession?> AddSessionAsync(WorkoutSession session)
+        public async Task<WorkoutSession?> AddSessionAsync(string AppUserId)
         {
-            await _dbContext.WorkoutSessions.AddAsync(session);
+            var sessionModel = new WorkoutSession { AppUserId = AppUserId };
+            await _dbContext.WorkoutSessions.AddAsync(sessionModel);
             await _dbContext.SaveChangesAsync();
-            return session;
+            return sessionModel;
         }
 
         public async Task<List<WorkoutSession>> GetSessionsAsync(string AppUserId)
