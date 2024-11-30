@@ -15,26 +15,26 @@ namespace gymlogger.Controllers
             _sessionRepository = sessionRepository;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserSessions([FromRoute] string id)
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserSessions([FromRoute] string userId)
         {
-            var sessions  = await _sessionRepository.GetSessionsAsync(id);
+            var sessions  = await _sessionRepository.GetSessionsAsync(userId);
 
             return Ok(sessions);
         }
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> CreateSession([FromRoute] string id)
+        [HttpPost("{userId}")]
+        public async Task<IActionResult> CreateSession([FromRoute] string userId)
         {
-            var session = await _sessionRepository.AddSessionAsync(id);
+            var session = await _sessionRepository.AddSessionAsync(userId);
 
             return Ok(session);
         }
 
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> UpdateSession([FromRoute] int id, UpdateSessionRequestDto requestDto)
+        [HttpPut("{sessionId}")] 
+        public async Task<IActionResult> UpdateSession([FromRoute] int sessionId, UpdateSessionRequestDto requestDto)
         {
-            var session = await _sessionRepository.UpdateSessionAsync(id, requestDto);
+            var session = await _sessionRepository.UpdateSessionAsync(sessionId, requestDto);
 
             if (session == null)
             {
