@@ -15,23 +15,23 @@ namespace gymlogger.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<WorkoutSession?> AddSessionAsync(string AppUserId)
+        public async Task<Session?> AddSessionAsync(string AppUserId)
         {
-            var sessionModel = new WorkoutSession { AppUserId = AppUserId };
-            await _dbContext.WorkoutSessions.AddAsync(sessionModel);
+            var sessionModel = new Session { AppUserId = AppUserId };
+            await _dbContext.Sessions.AddAsync(sessionModel);
             await _dbContext.SaveChangesAsync();
             return sessionModel;
         }
 
-        public async Task<List<WorkoutSession>> GetSessionsAsync(string AppUserId)
+        public async Task<List<Session>> GetSessionsAsync(string AppUserId)
         {
-            var Sessions = await _dbContext.WorkoutSessions.Where(s => s.AppUserId == AppUserId).ToListAsync();
+            var Sessions = await _dbContext.Sessions.Where(s => s.AppUserId == AppUserId).ToListAsync();
             return Sessions;
         }
 
-        public async Task<WorkoutSession?> UpdateSessionAsync(int sessionId, UpdateSessionRequestDto sessionDto)
+        public async Task<Session?> UpdateSessionAsync(int sessionId, UpdateSessionRequestDto sessionDto)
         {
-            var sessionModel = await _dbContext.WorkoutSessions.FirstOrDefaultAsync(s => s.Id == sessionId);
+            var sessionModel = await _dbContext.Sessions.FirstOrDefaultAsync(s => s.Id == sessionId);
 
             if (sessionModel == null)
             {

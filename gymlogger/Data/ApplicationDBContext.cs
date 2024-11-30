@@ -15,16 +15,16 @@ namespace gymlogger.Data
 
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Set> Sets { get; set; }
-        public DbSet<WorkoutSession> WorkoutSessions { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<WorkoutTemplate> workoutsTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<WorkoutSession>()
+            builder.Entity<Session>()
             .HasOne(ws => ws.AppUser)
-            .WithMany(u => u.WorkoutSessions)
+            .WithMany(u => u.Sessions)
             .HasForeignKey(ws => ws.AppUserId)
             .OnDelete(DeleteBehavior.Restrict);
 

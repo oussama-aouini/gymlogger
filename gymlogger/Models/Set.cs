@@ -12,8 +12,8 @@ namespace gymlogger.Models
         public SetType SetType { get; set; }
 
         // Foreign Key to WorkoutSession
-        public int WorkoutSessionId { get; set; }
-        public required WorkoutSession WorkoutSession { get; set; } // Navigation property
+        public int SessionId { get; set; }
+        public required Session Session { get; set; } // Navigation property
 
         // Foreign Key to Exercise
         public int ExerciseId { get; set; }

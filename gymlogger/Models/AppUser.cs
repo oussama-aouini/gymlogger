@@ -10,7 +10,7 @@ namespace gymlogger.Models
 
         // one to many props
         public List<WorkoutTemplate> WorkoutTemplates { get; set; } = new List<WorkoutTemplate>();
-        public List<WorkoutSession> WorkoutSessions { get; set; } = new List<WorkoutSession>();
+        public List<Session> Sessions { get; set; } = new List<Session>();
         public List<Set> Sets { get; set; } = new List<Set>();
 
     }

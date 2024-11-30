@@ -15,9 +15,9 @@ namespace gymlogger.Controllers
         }
 
         [HttpGet("{usedId}/session/{sessionId}")]
-        public async Task<IActionResult> GetWorkoutSessionSets([FromRoute] string usedId, [FromRoute] int sessionId)
+        public async Task<IActionResult> GetSessionSets([FromRoute] string usedId, [FromRoute] int sessionId)
         {
-            var sets = await _setRepository.GetSetsByWorkoutSessionIdAsync(usedId, sessionId);
+            var sets = await _setRepository.GetSetsBySessionIdAsync(usedId, sessionId);
 
             if (sets == null)
             {

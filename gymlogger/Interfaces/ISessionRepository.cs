@@ -5,8 +5,8 @@ namespace gymlogger.Interfaces
 {
     public interface ISessionRepository
     {
-        Task<List<WorkoutSession>> GetSessionsAsync(string AppUserId);
-        Task<WorkoutSession?> AddSessionAsync(string AppUserId);
-        Task<WorkoutSession?> UpdateSessionAsync(int sessionId, UpdateSessionRequestDto sessionDto);
+        Task<List<Session>> GetSessionsAsync(string AppUserId);
+        Task<Session?> AddSessionAsync(string AppUserId);
+        Task<Session?> UpdateSessionAsync(int sessionId, UpdateSessionRequestDto sessionDto);
     }
 }

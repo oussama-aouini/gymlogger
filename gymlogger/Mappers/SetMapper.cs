@@ -14,7 +14,7 @@ namespace gymlogger.Mappers
                 Weight = set.Weight,
                 SetType = set.SetType,
                 ExerciseId = set.ExerciseId,
-                WorkoutSessionId = set.WorkoutSessionId,
+                SessionId = set.SessionId,
             };
         }
     }
