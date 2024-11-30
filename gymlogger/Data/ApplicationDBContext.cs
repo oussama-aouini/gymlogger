@@ -13,10 +13,10 @@ namespace gymlogger.Data
             
         }
 
-        public DbSet<Exercise> Exercises { get; set; }
-        public DbSet<Set> Sets { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<WorkoutTemplate> workoutsTemplates { get; set; }
+        public required DbSet<Exercise> Exercises { get; set; }
+        public required DbSet<Set> Sets { get; set; }
+        public required DbSet<Session> Sessions { get; set; }
+        public required DbSet<WorkoutTemplate> workoutsTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
