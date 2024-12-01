@@ -1,5 +1,6 @@
 ﻿using gymlogger.Dtos.Session;
 using gymlogger.Interfaces;
+using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gymlogger.Controllers
@@ -20,7 +21,9 @@ namespace gymlogger.Controllers
         {
             var sessions  = await _sessionRepository.GetSessionsAsync(userId);
 
-            return Ok(sessions);
+            var sessionsDto = sessions.Select(s => s.ToSessionDto()).ToList();
+
+            return Ok(sessionsDto);
         }
 
         [HttpPost("{userId}")]

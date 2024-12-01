@@ -25,7 +25,7 @@ namespace gymlogger.Repository
 
         public async Task<List<Session>> GetSessionsAsync(string AppUserId)
         {
-            var Sessions = await _dbContext.Sessions.Where(s => s.AppUserId == AppUserId).ToListAsync();
+            var Sessions = await _dbContext.Sessions.Include(s => s.Sets).Where(s => s.AppUserId == AppUserId).ToListAsync();
             return Sessions;
         }
 
