@@ -31,6 +31,7 @@ namespace gymlogger.Repository
 
             setModel.Repetitions = set.Repetitions;
             setModel.Weight = set.Weight;
+            setModel.SetType = set.SetType;
 
             await _context.SaveChangesAsync();
 

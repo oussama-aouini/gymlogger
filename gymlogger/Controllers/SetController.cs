@@ -60,7 +60,20 @@ namespace gymlogger.Controllers
 
             var set = await _setRepository.AddAsync(setModel);
 
-            return Ok(set);
+            return Ok(set.ToSetDto());
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateSetRequestDto updateSetDto)
+        {
+            var set = await _setRepository.UpdateAsync(id, updateSetDto.ToSetFromUpdate());
+            
+            if (set == null)
+            {
+                return NotFound("Set not found");
+            }
+
+            return Ok(set.ToSetDto());
         }
     }
 }

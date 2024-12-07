@@ -30,5 +30,15 @@ namespace gymlogger.Mappers
                 ExerciseId = setDto.ExerciseId
             };
         }
+
+        public static Set ToSetFromUpdate(this UpdateSetRequestDto setDto)
+        {
+            return new Set
+            {
+                Repetitions = setDto.Repetitions,
+                Weight = setDto.Weight,
+                SetType = setDto.SetType
+            };
+        }
     }
 }
