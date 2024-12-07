@@ -75,5 +75,19 @@ namespace gymlogger.Controllers
 
             return Ok(set.ToSetDto());
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var set = await _setRepository.DeleteAsync(id);
+
+            if (set == null)
+            {
+                return NotFound("Set not found");
+            }
+
+            return Ok(set);
+        }
     }
 }

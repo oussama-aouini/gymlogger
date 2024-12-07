@@ -47,5 +47,19 @@ namespace gymlogger.Repository
         {
             return await _context.Sets.Where(s => s.SessionId == SessionId && s.AppUser.Id == userId).ToListAsync();
         }
+
+        public async Task<Set?> DeleteAsync(int id)
+        {
+            var set = await _context.Sets.FirstOrDefaultAsync(set => set.Id == id);
+
+            if (set == null)
+            {
+                return null;
+            }
+
+            _context.Sets.Remove(set);
+            await _context.SaveChangesAsync();
+            return set;
+        }
     }
 }

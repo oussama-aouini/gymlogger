@@ -8,5 +8,6 @@ namespace gymlogger.Interfaces
         Task<List<Set>> GetSetsByExerciseIdAsync(string userId, int exerciseId);
         Task<Set> AddAsync(Set set);
         Task<Set?> UpdateAsync(int id, Set set);
+        Task <Set?> DeleteAsync(int id);
     }
 }
