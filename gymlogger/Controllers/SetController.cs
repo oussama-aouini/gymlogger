@@ -17,7 +17,8 @@ namespace gymlogger.Controllers
             _sessionRepository = sessionRepository;
         }
 
-        [HttpGet("{usedId}/session/{sessionId}")]
+        // url constraints the diffirence with when submitting a string instead of ont you get not found while without you get a 400 bad request response
+        [HttpGet("{usedId}/session/{sessionId:int}")]
         public async Task<IActionResult> GetSessionSets([FromRoute] string usedId, [FromRoute] int sessionId)
         {
             var sets = await _setRepository.GetSetsBySessionIdAsync(usedId, sessionId);
@@ -32,7 +33,7 @@ namespace gymlogger.Controllers
             return Ok(setsDto);
         }
 
-        [HttpGet("{usedId}/exercise/{exerciseId}")]
+        [HttpGet("{usedId}/exercise/{exerciseId:int}")]
         public async Task<IActionResult> GetExerciseSets([FromRoute] string usedId, [FromRoute] int exerciseId)
         {
             var sets = await _setRepository.GetSetsByExerciseIdAsync(usedId, exerciseId);
@@ -63,7 +64,7 @@ namespace gymlogger.Controllers
             return Ok(set.ToSetDto());
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateSetRequestDto updateSetDto)
         {
             var set = await _setRepository.UpdateAsync(id, updateSetDto.ToSetFromUpdate());
@@ -77,7 +78,7 @@ namespace gymlogger.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var set = await _setRepository.DeleteAsync(id);
