@@ -29,6 +29,11 @@ namespace gymlogger.Repository
             return Sessions;
         }
 
+        public async Task<bool> SessionExists(int id)
+        {
+            return await _dbContext.Sessions.AnyAsync(s => s.Id == id);
+        }
+
         public async Task<Session?> UpdateSessionAsync(int sessionId, UpdateSessionRequestDto sessionDto)
         {
             var sessionModel = await _dbContext.Sessions.FirstOrDefaultAsync(s => s.Id == sessionId);

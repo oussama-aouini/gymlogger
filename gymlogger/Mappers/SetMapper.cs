@@ -17,5 +17,18 @@ namespace gymlogger.Mappers
                 SessionId = set.SessionId,
             };
         }
+
+        public static Set ToSetFromCreate(this CreateSetDto setDto)
+        {
+            return new Set
+            {
+                Repetitions = setDto.Repetitions,
+                Weight = setDto.Weight,
+                SetType = setDto.SetType,
+                SessionId = setDto.SessionId,
+                AppUserId = setDto.UserId,
+                ExerciseId = setDto.ExerciseId
+            };
+        }
     }
 }

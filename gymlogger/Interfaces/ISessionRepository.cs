@@ -8,5 +8,6 @@ namespace gymlogger.Interfaces
         Task<List<Session>> GetSessionsAsync(string AppUserId);
         Task<Session?> AddSessionAsync(string AppUserId);
         Task<Session?> UpdateSessionAsync(int sessionId, UpdateSessionRequestDto sessionDto);
+        Task<bool> SessionExists(int id);
     }
 }

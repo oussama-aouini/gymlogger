@@ -1,4 +1,5 @@
-﻿using gymlogger.Interfaces;
+﻿using gymlogger.Dtos.Set;
+using gymlogger.Interfaces;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,11 @@ namespace gymlogger.Controllers
     public class SetController : ControllerBase
     {
         private readonly ISetRepository _setRepository;
-        public SetController(ISetRepository setRepository)
+        private readonly ISessionRepository _sessionRepository;
+        public SetController(ISetRepository setRepository, ISessionRepository sessionRepository)
         {
             _setRepository = setRepository;
+            _sessionRepository = sessionRepository;
         }
 
         [HttpGet("{usedId}/session/{sessionId}")]
@@ -42,6 +45,22 @@ namespace gymlogger.Controllers
             var setsDto = sets.Select(set => set.ToSetDto());
 
             return Ok(setsDto);
+        }
+            
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateSetDto createSetDto)
+        {
+            if(!await _sessionRepository.SessionExists(createSetDto.SessionId))
+            {
+                return BadRequest("Session not found");
+            }
+
+            var setModel = createSetDto.ToSetFromCreate();
+
+            var set = await _setRepository.AddAsync(setModel);
+
+            return Ok(set);
         }
     }
 }
