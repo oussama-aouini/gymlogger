@@ -1,5 +1,6 @@
 ﻿using gymlogger.Data;
 using gymlogger.Dtos.Session;
+using gymlogger.Helpers;
 using gymlogger.Interfaces;
 using gymlogger.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +24,19 @@ namespace gymlogger.Repository
             return sessionModel;
         }
 
-        public async Task<List<Session>> GetSessionsAsync(string AppUserId)
+        public async Task<List<Session>> GetSessionsAsync(string AppUserId, GetUserSessionsQueryObject query)
         {
-            var Sessions = await _dbContext.Sessions.Include(s => s.Sets).Where(s => s.AppUserId == AppUserId).ToListAsync();
-            return Sessions;
+            var Sessions = _dbContext.Sessions.Include(s => s.Sets).Where(s => s.AppUserId == AppUserId).AsQueryable();
+
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                if (query.SortBy.Equals("StartTime", StringComparison.OrdinalIgnoreCase))
+                {
+                    Sessions = query.IsDecsending ? Sessions.OrderByDescending(s => s.StartTime) : Sessions.OrderBy(s => s.StartTime);
+                }
+            }
+
+            return await Sessions.ToListAsync();
         }
 
         public async Task<bool> SessionExists(int id)

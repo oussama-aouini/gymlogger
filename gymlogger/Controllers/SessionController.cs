@@ -1,4 +1,5 @@
 ﻿using gymlogger.Dtos.Session;
+using gymlogger.Helpers;
 using gymlogger.Interfaces;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ namespace gymlogger.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserSessions([FromRoute] string userId)
+        public async Task<IActionResult> GetUserSessions([FromRoute] string userId, [FromQuery] GetUserSessionsQueryObject query)
         {
-            var sessions  = await _sessionRepository.GetSessionsAsync(userId);
+            var sessions  = await _sessionRepository.GetSessionsAsync(userId, query);
 
             var sessionsDto = sessions.Select(s => s.ToSessionDto()).ToList();
 
