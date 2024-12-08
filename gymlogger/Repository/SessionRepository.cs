@@ -36,7 +36,9 @@ namespace gymlogger.Repository
                 }
             }
 
-            return await Sessions.ToListAsync();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await Sessions.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<bool> SessionExists(int id)
