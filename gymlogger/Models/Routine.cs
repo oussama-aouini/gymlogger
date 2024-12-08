@@ -1,6 +1,6 @@
 ﻿namespace gymlogger.Models
 {
-    public class WorkoutTemplate
+    public class Routine
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
