@@ -1,4 +1,5 @@
 ﻿using gymlogger.Dtos.Exercise;
+using gymlogger.Helpers;
 using gymlogger.Interfaces;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +19,9 @@ namespace gymlogger.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GetExercisesQueryObject query)
         {
-            var exercises = await _exerciseRepository.GetAllAsync();
+            var exercises = await _exerciseRepository.GetAllAsync(query);
 
             var exercisesDto = exercises.Select(e => e.ToExerciseDto());
 

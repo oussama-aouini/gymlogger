@@ -1,5 +1,6 @@
 ﻿using gymlogger.Data;
 using gymlogger.Dtos.Exercise;
+using gymlogger.Helpers;
 using gymlogger.Interfaces;
 using gymlogger.Models;
 using Microsoft.EntityFrameworkCore;
@@ -37,9 +38,16 @@ namespace gymlogger.Repository
             return exerciseModel; 
         }
 
-        public async Task<List<Exercise>> GetAllAsync()
+        public async Task<List<Exercise>> GetAllAsync(GetExercisesQueryObject query)
         {
-            return await _context.Exercises.ToListAsync();
+            var exercises = _context.Exercises.AsQueryable();
+
+            if(query.Muscle.HasValue)
+            {
+                exercises = exercises.Where(e => e.Muscles.Contains(query.Muscle.Value));
+            }
+
+            return await exercises.ToListAsync();
         }
 
         public async Task<Exercise?> GetByIdAsync(int id)
