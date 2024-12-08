@@ -1,6 +1,9 @@
-﻿namespace gymlogger.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace gymlogger.Models
 {
     //Joint Table
+    [Table("RoutineExercise")]
     public class RoutineExercise
     {
         public int RoutineId { get; set; }

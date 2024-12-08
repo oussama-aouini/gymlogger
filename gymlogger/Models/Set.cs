@@ -1,7 +1,9 @@
 ﻿using gymlogger.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gymlogger.Models
 {
+    [Table("Set")]
     public class Set
     {
         // I can use either null! or required 

@@ -1,5 +1,8 @@
-﻿namespace gymlogger.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace gymlogger.Models
 {
+    [Table("Session")]
     public class Session
     {
         public int Id { get; set; }

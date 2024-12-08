@@ -1,5 +1,8 @@
-﻿namespace gymlogger.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace gymlogger.Models
 {
+    [Table("Routine")]
     public class Routine
     {
         public int Id { get; set; }
