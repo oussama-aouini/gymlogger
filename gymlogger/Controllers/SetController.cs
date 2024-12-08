@@ -52,6 +52,9 @@ namespace gymlogger.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateSetDto createSetDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if(!await _sessionRepository.SessionExists(createSetDto.SessionId))
             {
                 return BadRequest("Session not found");
@@ -67,6 +70,9 @@ namespace gymlogger.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateSetRequestDto updateSetDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var set = await _setRepository.UpdateAsync(id, updateSetDto.ToSetFromUpdate());
             
             if (set == null)
