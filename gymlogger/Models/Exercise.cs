@@ -14,7 +14,5 @@ namespace gymlogger.Models
         // Many-to-Many: Exercise can belong to many WorkoutTemplates
         public List<Routine> Routines { get; set; } = new List<Routine>();
 
-        // Many-to-Many: Exercise can belong to many WorkoutSessions independently of any template
-        public List<Session> Sessions { get; set; } = new List<Session>();
     }
 }
