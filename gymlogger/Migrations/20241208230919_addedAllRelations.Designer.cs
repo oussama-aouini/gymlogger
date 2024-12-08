@@ -12,8 +12,8 @@ using gymlogger.Data;
 namespace gymlogger.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241116132908_SeedRole")]
-    partial class SeedRole
+    [Migration("20241208230919_addedAllRelations")]
+    partial class addedAllRelations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,36 +24,6 @@ namespace gymlogger.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ExerciseWorkoutSession", b =>
-                {
-                    b.Property<int>("ExercisesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkoutSessionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExercisesId", "WorkoutSessionsId");
-
-                    b.HasIndex("WorkoutSessionsId");
-
-                    b.ToTable("ExerciseWorkoutSession");
-                });
-
-            modelBuilder.Entity("ExerciseWorkoutTemplate", b =>
-                {
-                    b.Property<int>("ExercisesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkoutTemplatesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExercisesId", "WorkoutTemplatesId");
-
-                    b.HasIndex("WorkoutTemplatesId");
-
-                    b.ToTable("ExerciseWorkoutTemplate");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -84,13 +54,13 @@ namespace gymlogger.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d6d02d52-f4b1-4d42-8890-c96d7aa45aae",
+                            Id = "0bf214b5-7640-4ca9-b757-3000ccd99f3e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d77b1603-00da-4ed9-856e-45bacfcea450",
+                            Id = "dcf04324-c17f-49f8-9a28-310be61fd57e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -297,42 +267,55 @@ namespace gymlogger.Migrations
                     b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("gymlogger.Models.Set", b =>
+            modelBuilder.Entity("gymlogger.Models.Routine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Routines");
+                });
+
+            modelBuilder.Entity("gymlogger.Models.RoutineExercise", b =>
+                {
+                    b.Property<int>("RoutineId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Repetitions")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
-
-                    b.Property<int>("WorkoutSessionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("RoutineId", "ExerciseId");
 
                     b.HasIndex("ExerciseId");
 
-                    b.HasIndex("WorkoutSessionId");
-
-                    b.ToTable("Sets");
+                    b.ToTable("RoutineExercises");
                 });
 
-            modelBuilder.Entity("gymlogger.Models.WorkoutSession", b =>
+            modelBuilder.Entity("gymlogger.Models.Session", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -342,10 +325,12 @@ namespace gymlogger.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkoutSessions");
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Sessions");
                 });
 
-            modelBuilder.Entity("gymlogger.Models.WorkoutTemplate", b =>
+            modelBuilder.Entity("gymlogger.Models.Set", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -353,43 +338,34 @@ namespace gymlogger.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("AppUserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Repetitions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SessionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SetType")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.ToTable("workoutsTemplates");
-                });
+                    b.HasIndex("AppUserId");
 
-            modelBuilder.Entity("ExerciseWorkoutSession", b =>
-                {
-                    b.HasOne("gymlogger.Models.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasIndex("ExerciseId");
 
-                    b.HasOne("gymlogger.Models.WorkoutSession", null)
-                        .WithMany()
-                        .HasForeignKey("WorkoutSessionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.HasIndex("SessionId");
 
-            modelBuilder.Entity("ExerciseWorkoutTemplate", b =>
-                {
-                    b.HasOne("gymlogger.Models.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("gymlogger.Models.WorkoutTemplate", null)
-                        .WithMany()
-                        .HasForeignKey("WorkoutTemplatesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("Sets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -443,31 +419,96 @@ namespace gymlogger.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("gymlogger.Models.Routine", b =>
+                {
+                    b.HasOne("gymlogger.Models.AppUser", "AppUser")
+                        .WithMany("Routines")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("gymlogger.Models.RoutineExercise", b =>
+                {
+                    b.HasOne("gymlogger.Models.Exercise", "Exercise")
+                        .WithMany("RoutineExercise")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("gymlogger.Models.Routine", "Routine")
+                        .WithMany("RoutineExercise")
+                        .HasForeignKey("RoutineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("Routine");
+                });
+
+            modelBuilder.Entity("gymlogger.Models.Session", b =>
+                {
+                    b.HasOne("gymlogger.Models.AppUser", "AppUser")
+                        .WithMany("Sessions")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("gymlogger.Models.Set", b =>
                 {
+                    b.HasOne("gymlogger.Models.AppUser", "AppUser")
+                        .WithMany("Sets")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("gymlogger.Models.Exercise", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("gymlogger.Models.WorkoutSession", "WorkoutSession")
+                    b.HasOne("gymlogger.Models.Session", "Session")
                         .WithMany("Sets")
-                        .HasForeignKey("WorkoutSessionId")
+                        .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AppUser");
+
                     b.Navigation("Exercise");
 
-                    b.Navigation("WorkoutSession");
+                    b.Navigation("Session");
+                });
+
+            modelBuilder.Entity("gymlogger.Models.AppUser", b =>
+                {
+                    b.Navigation("Routines");
+
+                    b.Navigation("Sessions");
+
+                    b.Navigation("Sets");
                 });
 
             modelBuilder.Entity("gymlogger.Models.Exercise", b =>
                 {
+                    b.Navigation("RoutineExercise");
+
                     b.Navigation("Sets");
                 });
 
-            modelBuilder.Entity("gymlogger.Models.WorkoutSession", b =>
+            modelBuilder.Entity("gymlogger.Models.Routine", b =>
+                {
+                    b.Navigation("RoutineExercise");
+                });
+
+            modelBuilder.Entity("gymlogger.Models.Session", b =>
                 {
                     b.Navigation("Sets");
                 });

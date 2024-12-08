@@ -22,21 +22,6 @@ namespace gymlogger.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ExerciseRoutine", b =>
-                {
-                    b.Property<int>("ExercisesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoutinesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExercisesId", "RoutinesId");
-
-                    b.HasIndex("RoutinesId");
-
-                    b.ToTable("ExerciseRoutine");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -66,13 +51,13 @@ namespace gymlogger.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f974f998-00a6-42ed-a997-8a017bd59843",
+                            Id = "0bf214b5-7640-4ca9-b757-3000ccd99f3e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b90da1bd-b231-49ad-96f5-0352fffa7000",
+                            Id = "dcf04324-c17f-49f8-9a28-310be61fd57e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -302,6 +287,21 @@ namespace gymlogger.Migrations
                     b.ToTable("Routines");
                 });
 
+            modelBuilder.Entity("gymlogger.Models.RoutineExercise", b =>
+                {
+                    b.Property<int>("RoutineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoutineId", "ExerciseId");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.ToTable("RoutineExercises");
+                });
+
             modelBuilder.Entity("gymlogger.Models.Session", b =>
                 {
                     b.Property<int>("Id")
@@ -363,21 +363,6 @@ namespace gymlogger.Migrations
                     b.HasIndex("SessionId");
 
                     b.ToTable("Sets");
-                });
-
-            modelBuilder.Entity("ExerciseRoutine", b =>
-                {
-                    b.HasOne("gymlogger.Models.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("gymlogger.Models.Routine", null)
-                        .WithMany()
-                        .HasForeignKey("RoutinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -442,6 +427,25 @@ namespace gymlogger.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("gymlogger.Models.RoutineExercise", b =>
+                {
+                    b.HasOne("gymlogger.Models.Exercise", "Exercise")
+                        .WithMany("RoutineExercise")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("gymlogger.Models.Routine", "Routine")
+                        .WithMany("RoutineExercise")
+                        .HasForeignKey("RoutineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("Routine");
+                });
+
             modelBuilder.Entity("gymlogger.Models.Session", b =>
                 {
                     b.HasOne("gymlogger.Models.AppUser", "AppUser")
@@ -491,7 +495,14 @@ namespace gymlogger.Migrations
 
             modelBuilder.Entity("gymlogger.Models.Exercise", b =>
                 {
+                    b.Navigation("RoutineExercise");
+
                     b.Navigation("Sets");
+                });
+
+            modelBuilder.Entity("gymlogger.Models.Routine", b =>
+                {
+                    b.Navigation("RoutineExercise");
                 });
 
             modelBuilder.Entity("gymlogger.Models.Session", b =>

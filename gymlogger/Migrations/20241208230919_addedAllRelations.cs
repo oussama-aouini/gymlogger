@@ -3,39 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace gymlogger.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class addedAllRelations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Sets_WorkoutSessions_WorkoutSessionId",
-                table: "Sets");
-
-            migrationBuilder.DropColumn(
-                name: "WorkoutId",
-                table: "Sets");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "WorkoutSessionId",
-                table: "Sets",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "ExerciseId",
-                table: "Sets",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -79,51 +56,17 @@ namespace gymlogger.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExerciseWorkoutSession",
+                name: "Exercises",
                 columns: table => new
                 {
-                    ExercisesId = table.Column<int>(type: "int", nullable: false),
-                    WorkoutSessionsId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Muscles = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExerciseWorkoutSession", x => new { x.ExercisesId, x.WorkoutSessionsId });
-                    table.ForeignKey(
-                        name: "FK_ExerciseWorkoutSession_Exercises_ExercisesId",
-                        column: x => x.ExercisesId,
-                        principalTable: "Exercises",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExerciseWorkoutSession_WorkoutSessions_WorkoutSessionsId",
-                        column: x => x.WorkoutSessionsId,
-                        principalTable: "WorkoutSessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExerciseWorkoutTemplate",
-                columns: table => new
-                {
-                    ExercisesId = table.Column<int>(type: "int", nullable: false),
-                    WorkoutTemplatesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExerciseWorkoutTemplate", x => new { x.ExercisesId, x.WorkoutTemplatesId });
-                    table.ForeignKey(
-                        name: "FK_ExerciseWorkoutTemplate_Exercises_ExercisesId",
-                        column: x => x.ExercisesId,
-                        principalTable: "Exercises",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExerciseWorkoutTemplate_workoutsTemplates_WorkoutTemplatesId",
-                        column: x => x.WorkoutTemplatesId,
-                        principalTable: "workoutsTemplates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,10 +175,115 @@ namespace gymlogger.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Sets_ExerciseId",
-                table: "Sets",
-                column: "ExerciseId");
+            migrationBuilder.CreateTable(
+                name: "Routines",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Routines", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Routines_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sessions_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoutineExercises",
+                columns: table => new
+                {
+                    RoutineId = table.Column<int>(type: "int", nullable: false),
+                    ExerciseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoutineExercises", x => new { x.RoutineId, x.ExerciseId });
+                    table.ForeignKey(
+                        name: "FK_RoutineExercises_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoutineExercises_Routines_RoutineId",
+                        column: x => x.RoutineId,
+                        principalTable: "Routines",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Weight = table.Column<float>(type: "real", nullable: false),
+                    Repetitions = table.Column<int>(type: "int", nullable: false),
+                    SetType = table.Column<int>(type: "int", nullable: false),
+                    SessionId = table.Column<int>(type: "int", nullable: false),
+                    ExerciseId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sets_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Sets_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Sets_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "0bf214b5-7640-4ca9-b757-3000ccd99f3e", null, "Admin", "ADMIN" },
+                    { "dcf04324-c17f-49f8-9a28-310be61fd57e", null, "User", "USER" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -277,43 +325,39 @@ namespace gymlogger.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExerciseWorkoutSession_WorkoutSessionsId",
-                table: "ExerciseWorkoutSession",
-                column: "WorkoutSessionsId");
+                name: "IX_RoutineExercises_ExerciseId",
+                table: "RoutineExercises",
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExerciseWorkoutTemplate_WorkoutTemplatesId",
-                table: "ExerciseWorkoutTemplate",
-                column: "WorkoutTemplatesId");
+                name: "IX_Routines_AppUserId",
+                table: "Routines",
+                column: "AppUserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Sets_Exercises_ExerciseId",
-                table: "Sets",
-                column: "ExerciseId",
-                principalTable: "Exercises",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.CreateIndex(
+                name: "IX_Sessions_AppUserId",
+                table: "Sessions",
+                column: "AppUserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Sets_WorkoutSessions_WorkoutSessionId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Sets_AppUserId",
                 table: "Sets",
-                column: "WorkoutSessionId",
-                principalTable: "WorkoutSessions",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sets_ExerciseId",
+                table: "Sets",
+                column: "ExerciseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sets_SessionId",
+                table: "Sets",
+                column: "SessionId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Sets_Exercises_ExerciseId",
-                table: "Sets");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Sets_WorkoutSessions_WorkoutSessionId",
-                table: "Sets");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -330,45 +374,25 @@ namespace gymlogger.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ExerciseWorkoutSession");
+                name: "RoutineExercises");
 
             migrationBuilder.DropTable(
-                name: "ExerciseWorkoutTemplate");
+                name: "Sets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Routines");
+
+            migrationBuilder.DropTable(
+                name: "Exercises");
+
+            migrationBuilder.DropTable(
+                name: "Sessions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Sets_ExerciseId",
-                table: "Sets");
-
-            migrationBuilder.DropColumn(
-                name: "ExerciseId",
-                table: "Sets");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "WorkoutSessionId",
-                table: "Sets",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AddColumn<int>(
-                name: "WorkoutId",
-                table: "Sets",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Sets_WorkoutSessions_WorkoutSessionId",
-                table: "Sets",
-                column: "WorkoutSessionId",
-                principalTable: "WorkoutSessions",
-                principalColumn: "Id");
         }
     }
 }
