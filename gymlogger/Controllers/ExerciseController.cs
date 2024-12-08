@@ -27,7 +27,7 @@ namespace gymlogger.Controllers
             return Ok(exercisesDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var exercise = await _exerciseRepository.GetByIdAsync(id);
@@ -43,14 +43,20 @@ namespace gymlogger.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateExerciseRequestDto exerciseDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var exerciseModel = exerciseDto.ToExerciseFromCreateDto();
             await _exerciseRepository.CreateAsync(exerciseModel);
             return CreatedAtAction(nameof(GetById), new {id = exerciseModel.Id}, exerciseModel.ToExerciseDto());
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id ,[FromBody] UpdateExerciseRequestDto exerciseDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var exerciseModel = await _exerciseRepository.UpdateAsync(id, exerciseDto);
 
             if (exerciseModel == null)
@@ -61,7 +67,7 @@ namespace gymlogger.Controllers
             return Ok(exerciseModel.ToExerciseDto());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id) 
         { 
             var exerciseModel = await _exerciseRepository.DeleteAsync(id);
