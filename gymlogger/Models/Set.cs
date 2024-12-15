@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gymlogger.Models
 {
-    [Table("Set")]
+    [Table("Sets")]
     public class Set
     {
         // I can use either null! or required 
@@ -11,6 +11,7 @@ namespace gymlogger.Models
         public int Id { get; set; }
         public float Weight { get; set; }
         public int Repetitions { get; set; }
+        // Todo add partial reps
         public SetType SetType { get; set; }
 
         // Foreign Key to WorkoutSession

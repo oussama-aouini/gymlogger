@@ -3,7 +3,7 @@
 namespace gymlogger.Models
 {
     //Joint Table
-    [Table("RoutineExercise")]
+    [Table("RoutineExercises")]
     public class RoutineExercise
     {
         public int RoutineId { get; set; }

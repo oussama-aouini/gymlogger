@@ -2,7 +2,7 @@
 
 namespace gymlogger.Models
 {
-    [Table("Session")]
+    [Table("Sessions")]
     public class Session
     {
         public int Id { get; set; }
