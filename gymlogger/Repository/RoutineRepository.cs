@@ -25,5 +25,10 @@ namespace gymlogger.Repository
                     Sets = x.Exercise.Sets,
                 }).ToListAsync();
         }
+
+        public async Task<List<Routine>> GetUserRoutines(string userId)
+        {
+            return await _context.Routines.Where(r => r.AppUserId ==  userId).ToListAsync();
+        }
     }
 }

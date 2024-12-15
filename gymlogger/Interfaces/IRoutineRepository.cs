@@ -4,7 +4,7 @@ namespace gymlogger.Interfaces
 {
     public interface IRoutineRepository
     {
-        // Todo: Task<List<Routine>> GetUserRoutines(AppUser user);
+        Task<List<Routine>> GetUserRoutines(string userId);
         Task<List<Exercise>> GetRoutineExercices(int routineId);
 
     }

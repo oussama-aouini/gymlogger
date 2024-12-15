@@ -31,11 +31,15 @@ namespace gymlogger.Controllers
             return Ok(exerciesDto);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetUserRoutines()
-        //{
-        //    var username = User.GetUsername();
-        //    var appUser = await _userManager.FindByNameAsync(username);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> GetUserRoutines()
+        {
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+
+            var routines = await _routineRepository.GetUserRoutines(appUser.Id);
+
+            return Ok(routines);
+        }
     }
 }
