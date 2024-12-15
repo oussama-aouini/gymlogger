@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gymlogger.Models
 {
-    [Table("Exercise")]
+    [Table("Exercises")]
     public class Exercise
     {
         public int Id { get; set; }
