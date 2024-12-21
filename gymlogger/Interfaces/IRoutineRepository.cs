@@ -5,7 +5,7 @@ namespace gymlogger.Interfaces
     public interface IRoutineRepository
     {
         Task<List<Routine>> GetUserRoutines(string userId);
-        Task<List<Exercise>> GetRoutineExercices(int routineId);
-
+        Task<List<Exercise>> GetRoutineExercicesAsync(int routineId);
+        Task AddExerciseToRoutine(int routineId, int exerciseId);
     }
 }

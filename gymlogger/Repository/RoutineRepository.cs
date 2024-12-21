@@ -14,7 +14,13 @@ namespace gymlogger.Repository
             _context = context;
         }
 
-        public async Task<List<Exercise>> GetRoutineExercices(int routineId)
+        public async Task AddExerciseToRoutine(int routineId, int exerciseId)
+        {
+            await _context.RoutineExercises.AddAsync(new RoutineExercise { RoutineId = routineId, ExerciseId = exerciseId });
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Exercise>> GetRoutineExercicesAsync(int routineId)
         {
             return await _context.RoutineExercises.Where(r => r.RoutineId == routineId)
                 .Select(x => new Exercise

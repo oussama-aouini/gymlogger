@@ -11,7 +11,7 @@ namespace gymlogger.Models
 
         // Navigatio props (these props are for the
         // developer they take no part in making the relationship between tables )
-        public required Routine Routine { get; set; }
-        public required Exercise Exercise { get; set; }
+        public Routine Routine { get; set; } = null!;
+        public Exercise Exercise { get; set; } = null!;
     }
 }
