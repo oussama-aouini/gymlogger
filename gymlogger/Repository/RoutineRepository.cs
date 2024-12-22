@@ -36,5 +36,19 @@ namespace gymlogger.Repository
         {
             return await _context.Routines.Where(r => r.AppUserId ==  userId).ToListAsync();
         }
+
+        public async Task<RoutineExercise?> RemoveExerciseFromRoutineAsync(int routineId, int exerciseId)
+        {
+            var routineExercise = await _context.RoutineExercises.FirstOrDefaultAsync(x => x.ExerciseId == exerciseId && x.RoutineId == routineId);
+
+            if (routineExercise == null)
+            {
+                return null;
+            }
+
+            _context.RoutineExercises.Remove(routineExercise);
+            await _context.SaveChangesAsync();
+            return routineExercise;
+        }
     }
 }

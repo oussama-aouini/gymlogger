@@ -67,5 +67,25 @@ namespace gymlogger.Controllers
 
             return Created();
         }
+
+        [HttpDelete("{routineId}")]
+        public async Task<IActionResult> RemoveExerciseFromRoutine([FromRoute] int routineId, [FromBody] RemoveExerciseFromRoutineDto request)
+        {
+            var exercises = await _routineRepository.GetRoutineExercicesAsync(routineId);
+
+            var exercise = exercises.Where(e => e.Id == request.ExerciseId);
+
+            if (exercise.Count() == 1)
+            {
+                await _routineRepository.RemoveExerciseFromRoutineAsync(routineId, request.ExerciseId);
+            }
+            else
+            {
+                return BadRequest("Exercise not in routine");
+            }
+
+            return Ok();
+
+        }
     }
 }
