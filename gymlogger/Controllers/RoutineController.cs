@@ -35,6 +35,7 @@ namespace gymlogger.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetUserRoutines()
         {
             var username = User.GetUsername();
