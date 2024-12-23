@@ -11,9 +11,15 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// The program.cd has two main parts:
+// 1 - DI ioc container 
+// a blackbox that knows how to create the needed objects based on the given configuration 
+// 2- Middleware aka the request pipeline is a sequence of objects that call one another till we get to the controller
+// then the controller returns the response and the response goes back the opposite way through the middlewares 
+
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(); // scan the assembly for controllers and add them to the di ioc container 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -109,8 +115,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseAuthorization();
-
-app.MapControllers();
+app.MapControllers(); // compares the request route to the available controller routes to know which controller to invoke
 
 app.Run();
