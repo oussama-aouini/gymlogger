@@ -17,6 +17,10 @@ namespace gymlogger.Controllers
             _exerciseRepository = exerciseRepository;
         }
 
+        // The methods inside a controller are named Action methods 
+
+        // With IActionResult we can return any type 
+        // With ActionResult / ActionResult<T> we enforce the type T we return 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] GetExercisesQueryObject query)
