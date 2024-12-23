@@ -17,6 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 // 2- Middleware aka the request pipeline is a sequence of objects that call one another till we get to the controller
 // then the controller returns the response and the response goes back the opposite way through the middlewares 
 
+// IOC aka inversion of control is delegating some responsabilities like creating controller objects instances
+// creating their objects dependencies and injecting them ... to the framework (asp .net core) instead 
+// of the developper writing the code himself.
+
 // Add services to the container.
 
 builder.Services.AddControllers(); // scan the assembly for controllers and add them to the di ioc container 
@@ -95,7 +99,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+// this means for this interface i want this implimentation there is another overload that takes only object in the generic 
+// the ioc container find the following interfaces and then inject the specified objects
+
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>(); 
 builder.Services.AddScoped<ISetRepository, SetRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
