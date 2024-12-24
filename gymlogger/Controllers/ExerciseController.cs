@@ -4,10 +4,13 @@ using gymlogger.Interfaces;
 using gymlogger.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace gymlogger.Controllers
 {
     [Route("api/exercise")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
     public class ExerciseController : ControllerBase
     {
@@ -32,7 +35,14 @@ namespace gymlogger.Controllers
             return Ok(exercisesDto);
         }
 
+        /// <summary>
+        /// Returns a specific exercise
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var exercise = await _exerciseRepository.GetByIdAsync(id);
