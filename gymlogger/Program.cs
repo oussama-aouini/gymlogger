@@ -33,6 +33,18 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
+// if not added the api only accepts requests from the same domain as the api 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("React App", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:5173");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Gymlogger API", Version = "v1" });
@@ -109,6 +121,8 @@ builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
 
 var app = builder.Build();
+
+app.UseCors("React App");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

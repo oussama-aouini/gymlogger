@@ -22,7 +22,7 @@ namespace gymlogger.Controllers
         // With IActionResult we can return any type 
         // With ActionResult / ActionResult<T> we enforce the type T we return 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAll([FromQuery] GetExercisesQueryObject query)
         {
             var exercises = await _exerciseRepository.GetAllAsync(query);
